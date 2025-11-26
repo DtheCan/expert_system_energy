@@ -1,3 +1,4 @@
+import 'package:expert_system_energy/screens/electricity_questionnaire_screens.dart';
 import 'package:flutter/material.dart';
 import '../models/building_data.dart';
 import '../models/energy_analysis.dart';
@@ -108,11 +109,39 @@ class _MainScreenState extends State<MainScreen> {
                 ],
               ),
             ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: _analyzeEnergyConsumption,
-        icon: const Icon(Icons.energy_savings_leaf),
-        label: const Text('Анализ'),
-        backgroundColor: Colors.green,
+      floatingActionButton: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          // Первая кнопка - Анализ электропотребления
+          FloatingActionButton.extended(
+            onPressed: _openElectricityQuestionnaire,
+            icon: const Icon(Icons.electrical_services),
+            label: const Text('Электроанализ'),
+            backgroundColor: Colors.blue,
+            heroTag:
+                'electricity_analysis', // Уникальный heroTag для каждой кнопки
+          ),
+          const SizedBox(width: 16), // Отступ между кнопками
+          // Вторая кнопка - Основной анализ
+          FloatingActionButton.extended(
+            onPressed: _analyzeEnergyConsumption,
+            icon: const Icon(Icons.energy_savings_leaf),
+            label: const Text('Анализ'),
+            backgroundColor: Colors.green,
+            heroTag: 'energy_analysis', // Уникальный heroTag для каждой кнопки
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _openElectricityQuestionnaire() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ElectricityQuestionnaireScreen(
+          electricityPrice: _buildingData.electricityPrice,
+        ),
       ),
     );
   }
